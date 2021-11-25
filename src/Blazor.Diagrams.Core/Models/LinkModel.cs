@@ -15,5 +15,6 @@ namespace Blazor.Diagrams.Core.Models
         public string? Color { get; set; }
         public string? SelectedColor { get; set; }
         public double Width { get; set; } = 2;
+        public string StrokeStyle { get; set; } = "solid";
     }
 }

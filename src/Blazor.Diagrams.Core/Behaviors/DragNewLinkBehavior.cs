@@ -93,7 +93,8 @@ namespace Blazor.Diagrams.Core.Behaviors
                 return;
             }
 
-            if (!(model is PortModel port) || !_ongoingLink.SourcePort!.CanAttachTo(port))
+            if (!(model is PortModel port) || !_ongoingLink.SourcePort!.CanAttachTo(port) 
+                || !port.CanAttachTo(_ongoingLink.SourcePort)) // Also check if the dest port can be attached. 
             {
                 Diagram.Links.Remove(_ongoingLink);
                 _ongoingLink = null;

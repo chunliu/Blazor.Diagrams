@@ -12,6 +12,7 @@
     var color = Link.Selected ? (Link.SelectedColor ?? Diagram.Options.Links.DefaultSelectedColor)
         : (Link.Color ?? Diagram.Options.Links.DefaultColor);
     var paths = Link.Labels.Count > 0 ? result.Paths.Select(p => new SVGPathProperties(p)).ToArray() : Array.Empty<SVGPathProperties>();
+    var dashed = Link.StrokeStyle == "dashed" ? "5" : "none";
 }
 
 @for (var i = 0; i < result.Paths.Length; i++)
@@ -20,6 +21,7 @@
     <path d="@result.Paths[i]"
           stroke-width="@Link.Width.ToInvariantString()"
           fill="none"
+          stroke-dasharray="@dashed"
           stroke="@color" />
 
     @if (Link.IsAttached)
