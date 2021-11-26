@@ -174,6 +174,11 @@ namespace Blazor.Diagrams.Core
             });
         }
 
+        public void RemoveAllGroups()
+        {
+            _groups.Clear();
+        }
+
         #endregion
 
         #region Selection

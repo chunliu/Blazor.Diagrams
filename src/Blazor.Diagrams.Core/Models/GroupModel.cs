@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Extensions;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +15,13 @@ namespace Blazor.Diagrams.Core.Models
         {
             _children = new List<NodeModel>();
 
-            Size = Size.Zero;
+            //Size = Size.Zero;
             Padding = padding;
             Initialize(children);
+        }
+
+        public GroupModel() : this(Array.Empty<NodeModel>())
+        {
         }
 
         public IReadOnlyList<NodeModel> Children => _children;
