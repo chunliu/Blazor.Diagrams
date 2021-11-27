@@ -129,7 +129,7 @@ namespace Blazor.Diagrams.Core
 
             foreach (var child in group.Children)
             {
-                if (child is NodeModel node && !Nodes.Contains(node))
+                if (!(child is GroupModel) && child is NodeModel node && !Nodes.Contains(node))
                     throw new Exception("One of the nodes isn't in the diagram. Make sure to add all the nodes before creating the group.");
             }
 

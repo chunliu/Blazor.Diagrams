@@ -15,7 +15,7 @@ namespace Blazor.Diagrams.Core.Models
         {
             _children = new List<NodeModel>();
 
-            //Size = Size.Zero;
+            Size = Size.Zero;
             Padding = padding;
             Initialize(children);
         }
