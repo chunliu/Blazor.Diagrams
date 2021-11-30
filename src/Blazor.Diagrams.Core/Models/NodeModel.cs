@@ -43,7 +43,7 @@ namespace Blazor.Diagrams.Core.Models
                 SizeChanged?.Invoke(this);
             }
         }
-        public GroupModel? Group { get; internal set; }
+        public GroupModel? Group { get; set; }
         public string Title { get; set; }
 
         public IReadOnlyList<PortModel> Ports => _ports;
