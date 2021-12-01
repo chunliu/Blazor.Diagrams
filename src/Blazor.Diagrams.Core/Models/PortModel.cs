@@ -53,7 +53,14 @@ namespace Blazor.Diagrams.Core.Models
 
         public Rectangle GetBounds() => new Rectangle(Position, Size);
 
-        internal void AddLink(BaseLinkModel link) => _links.Add(link);
+        internal void AddLink(BaseLinkModel link)  // => _links.Add(link);
+        {
+            // Links with the same id should only be added once.
+            if (_links.Find(l => l.Id == link.Id) != null)
+                return;
+
+            _links.Add(link);
+        }
 
         internal void RemoveLink(BaseLinkModel link) => _links.Remove(link);
     }
