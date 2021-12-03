@@ -166,7 +166,11 @@ namespace Blazor.Diagrams.Core
 
             Batch(() =>
             {
-                _groups.RemoveAll(g => ((NodeModel)g).Group?.Equals(group) ?? false);
+                // If the group is in another group, it needs to be removed from the parent.
+                if (group.Group is GroupModel p)
+                    p.RemoveChild(group);
+                // If the group contains other groups, all child groups need to be removed. 
+                _groups.RemoveAll(g => g.Group?.Equals(group) ?? false);
                 Nodes.Remove(group.Children.ToArray());
                 Links.Remove(group.AllLinks.ToArray());
                 group.Ungroup();
@@ -174,6 +178,7 @@ namespace Blazor.Diagrams.Core
             });
         }
 
+        // Use with cautious!!!
         public void RemoveAllGroups()
         {
             _groups.Clear();
