@@ -96,7 +96,7 @@ namespace Blazor.Diagrams.Core.Models
 
             UpdatePortPositions(deltaX, deltaY);
             Refresh();
-            RefreshLinks();
+            //RefreshLinks();
             Moving?.Invoke(this);
         }
 
@@ -132,7 +132,7 @@ namespace Blazor.Diagrams.Core.Models
 
         public IShape GetShape() => ShapeDefiner(this);
 
-        private void UpdatePortPositions(double deltaX, double deltaY)
+        protected void UpdatePortPositions(double deltaX, double deltaY)
         {
             // Save some JS calls and update ports directly here
             foreach (var port in _ports)

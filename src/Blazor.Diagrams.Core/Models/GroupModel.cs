@@ -108,7 +108,6 @@ namespace Blazor.Diagrams.Core.Models
             {
                 if (Group?.UpdateDimensions() ?? false)
                 {
-                    // Update the parent group's dimensions
                     Group.Refresh();
                 }
 
@@ -124,9 +123,22 @@ namespace Blazor.Diagrams.Core.Models
             if (Children.Any(n => n.Size == null))
                 return false;
 
+            // Need to update ports as well. 
+            var oldPosition = Position;
+
             var bounds = Children.GetBounds();
             Size = new Size(bounds.Width + Padding * 2, bounds.Height + Padding * 2);
             Position = new Point(bounds.Left - Padding, bounds.Top - Padding);
+
+            var deltaX = Position.X - oldPosition.X;
+            var deltaY = Position.Y - oldPosition.Y;
+            if (deltaX != 0 || deltaY != 0)
+            {
+                UpdatePortPositions(deltaX, deltaY);
+                //Refresh();
+                
+            }
+
             return true;
         }
     }
