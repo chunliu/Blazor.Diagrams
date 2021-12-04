@@ -32,7 +32,7 @@ namespace Blazor.Diagrams.Core.Models
         {
             _children.Add(child);
             child.Group = this;
-            child.SizeChanged += OnNodeChanged;
+            //child.SizeChanged += OnNodeChanged;
             child.Moving += OnNodeChanged;
 
             if (UpdateDimensions())
@@ -47,7 +47,10 @@ namespace Blazor.Diagrams.Core.Models
                 return;
 
             child.Group = null;
-            child.SizeChanged -= OnNodeChanged;
+            // Suppose the node size in ADS never changes.
+            // The sub group size change only happens in UpdateDimensions().
+            // So no need to handle the size change event. 
+            //child.SizeChanged -= OnNodeChanged;
             child.Moving -= OnNodeChanged;
 
             if (UpdateDimensions())
@@ -82,7 +85,7 @@ namespace Blazor.Diagrams.Core.Models
             foreach (var child in Children)
             {
                 child.Group = null;
-                child.SizeChanged -= OnNodeChanged;
+                //child.SizeChanged -= OnNodeChanged;
                 child.Moving -= OnNodeChanged;
             }
 
@@ -95,7 +98,7 @@ namespace Blazor.Diagrams.Core.Models
             {
                 _children.Add(child);
                 child.Group = this;
-                child.SizeChanged += OnNodeChanged;
+                //child.SizeChanged += OnNodeChanged;
                 child.Moving += OnNodeChanged;
             }
 
@@ -134,9 +137,7 @@ namespace Blazor.Diagrams.Core.Models
             var deltaY = Position.Y - oldPosition.Y;
             if (deltaX != 0 || deltaY != 0)
             {
-                UpdatePortPositions(deltaX, deltaY);
-                //Refresh();
-                
+                UpdatePortPositions(deltaX, deltaY);               
             }
 
             return true;
