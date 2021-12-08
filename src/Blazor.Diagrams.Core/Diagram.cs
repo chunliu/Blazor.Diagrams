@@ -249,6 +249,33 @@ namespace Blazor.Diagrams.Core
             }
         }
 
+        public void DeleteSelectedModel()
+        {
+            Batch(() =>
+            {
+                foreach (var sm in GetSelectedModels().ToList())
+                {
+                    if (sm.Locked)
+                        continue;
+
+                    if (sm is GroupModel group && Options.Constraints.ShouldDeleteGroup(group))
+                    {
+                        RemoveGroup(group);
+                    }
+                    else if (sm is NodeModel node && Options.Constraints.ShouldDeleteNode(node))
+                    {
+                        Nodes.Remove(node);
+                    }
+                    else if (sm is BaseLinkModel link && Options.Constraints.ShouldDeleteLink(link))
+                    {
+                        Links.Remove(link);
+                    }
+                }
+            });
+
+            SelectionChanged?.Invoke(null!);
+        }
+
         #endregion
 
         #region Behaviors
