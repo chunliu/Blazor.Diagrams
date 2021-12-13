@@ -19,6 +19,8 @@ namespace Blazor.Diagrams.Components
 
         [Parameter]
         public string Class { get; set; }
+        [Parameter]
+        public string Id { get; set; }
 
         [Inject]
         public IJSRuntime JSRuntime { get; set; }

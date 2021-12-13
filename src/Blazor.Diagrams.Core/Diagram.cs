@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("Blazor.Diagrams")]
 [assembly: InternalsVisibleTo("Blazor.Diagrams.Core.Tests")]
@@ -320,11 +321,14 @@ namespace Blazor.Diagrams.Core
 
         public void ZoomToFit(double margin = 10)
         {
-            if (Container == null || Nodes.Count == 0)
+            if (Container == null || (Nodes.Count == 0 && Groups.Count == 0))
                 return;
 
-            var selectedNodes = Nodes.Where(s => s.Selected);
-            var nodesToUse = selectedNodes.Any() ? selectedNodes : Nodes;
+            //var selectedNodes = Nodes.Where(s => s.Selected);
+            //var nodesToUse = selectedNodes.Any() ? selectedNodes : Nodes;
+            var nodesToUse = new List<NodeModel>();
+            nodesToUse.AddRange(Nodes);
+            nodesToUse.AddRange(Groups);
             var bounds = nodesToUse.GetBounds();
             var width = bounds.Width + 2 * margin;
             var height = bounds.Height + 2 * margin;
@@ -422,6 +426,67 @@ namespace Blazor.Diagrams.Core
 
         internal void OnTouchEnd(Model model, TouchEventArgs e) => TouchEnd?.Invoke(model, e);
 
+        #endregion
+
+        #region Print
+        double zoomBeforePrint = 1;
+        Point? panBeforePrint = null;
+        Rectangle? containerBeforePrint = null;
+        public async Task<Rectangle?> BeforePrint(double margin = 50)
+        {
+            if (Container == null || (Nodes.Count == 0 && Groups.Count == 0))
+                return null;
+
+            containerBeforePrint = Container;
+            zoomBeforePrint = Zoom;
+            panBeforePrint = Pan;
+
+            // 3 Steps, similar to zoom to fit. 
+            // 1. Update the container side with A4 (300dpi). Maybe configurable?
+            // 2. Zoom to make the size fit the the new container. 
+            // 3. Update pan to make the position fit the new container. 
+            return await Task.Run(() =>
+            {
+                var nodesToUse = new List<NodeModel>();
+                nodesToUse.AddRange(Nodes);
+                nodesToUse.AddRange(Groups);
+                var bounds = nodesToUse.GetBounds();
+                var width = bounds.Width + 2 * margin;
+                var height = bounds.Height + 2 * margin;
+                var minX = bounds.Left - margin;
+                var minY = bounds.Top - margin;
+
+                SuspendRefresh = true;
+                // A4 with 300DPI
+                var containerA4 = width > height ? new Rectangle(minX, minY, 3508, 2480)
+                    : new Rectangle(minX, minY, 2480, 3508);
+                SetContainer(containerA4);
+
+                var xf = Container.Width / width;
+                var yf = Container.Height / height;
+                SetZoom(Math.Min(xf, yf));
+
+                var nx = Container.Left + Pan.X + minX * Zoom;
+                var ny = Container.Top + Pan.Y + minY * Zoom;
+                UpdatePan(Container.Left - nx, Container.Top - ny);
+
+                SuspendRefresh = false;
+                Refresh();
+
+                return containerA4;
+            });
+        }
+        public void AfterPrint()
+        {
+            SuspendRefresh = true;
+
+            SetContainer(containerBeforePrint!);
+            SetPan(panBeforePrint!.X, panBeforePrint!.Y);
+            SetZoom(zoomBeforePrint);
+
+            SuspendRefresh = false;
+            Refresh();
+        }
         #endregion
     }
 }
