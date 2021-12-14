@@ -16,6 +16,9 @@ namespace Blazor.Diagrams.Components.Groups
         public GroupModel Group { get; set; }
 
         [Parameter]
+        public string Style { get; set; } = string.Empty;
+
+        [Parameter]
         public string Class { get; set; }
 
         [Parameter]
