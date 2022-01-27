@@ -37,6 +37,8 @@ namespace Blazor.Diagrams.Core.Models
 
             if (UpdateDimensions())
             {
+                Group?.UpdateDimensions();
+                Group?.Refresh();
                 Refresh();
             }
         }
@@ -55,6 +57,8 @@ namespace Blazor.Diagrams.Core.Models
 
             if (UpdateDimensions())
             {
+                Group?.UpdateDimensions();
+                Group?.Refresh();
                 Refresh();
             }
         }
