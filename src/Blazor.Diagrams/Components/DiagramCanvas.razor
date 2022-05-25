@@ -14,7 +14,7 @@
      @ontouchend:preventDefault>
 
     @* Links *@
-    <svg class="diagram-svg-layer" style="@LayerStyle">
+    <svg class="diagram-svg-layer" style="@($"{LayerStyle}z-index: 1;")">
         @foreach (var link in Diagram.Links)
         {
             <LinkRenderer @key="link" Link="link" />
