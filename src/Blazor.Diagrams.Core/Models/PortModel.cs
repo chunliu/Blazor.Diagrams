@@ -1,5 +1,6 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -8,6 +9,9 @@ namespace Blazor.Diagrams.Core.Models
     public class PortModel : Model
     {
         private readonly List<BaseLinkModel> _links = new List<BaseLinkModel>(4);
+
+        public Action<PortModel, BaseLinkModel>? OnLinkAdded;
+        public Action<PortModel, BaseLinkModel>? OnLinkRemoved;
 
         public PortModel(NodeModel parent, PortAlignment alignment = PortAlignment.Bottom, Point? position = null,
             Size? size = null)
@@ -60,8 +64,13 @@ namespace Blazor.Diagrams.Core.Models
                 return;
 
             _links.Add(link);
+            OnLinkAdded?.Invoke(this, link);
         }
 
-        internal void RemoveLink(BaseLinkModel link) => _links.Remove(link);
+        internal void RemoveLink(BaseLinkModel link)
+        {
+            _links.Remove(link);
+            OnLinkRemoved?.Invoke(this, link);
+        }
     }
 }
