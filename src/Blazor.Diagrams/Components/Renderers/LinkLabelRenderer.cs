@@ -16,7 +16,7 @@ namespace Blazor.Diagrams.Components.Renderers
     {
         [CascadingParameter] public Diagram Diagram { get; set; }
         [Parameter] public LinkLabelModel Label { get; set; }
-        [Parameter] public SVGPathProperties[] Paths { get; set; }
+        [Parameter] public SvgPath[] Paths { get; set; }
 
         public void Dispose()
         {
@@ -45,7 +45,7 @@ namespace Blazor.Diagrams.Components.Renderers
 
         private Point FindPosition()
         {
-            var totalLength = Paths.Sum(p => p.GetTotalLength());
+            var totalLength = Paths.Sum(p => p.Length);
 
             var length = Label.Distance switch
             {
@@ -57,7 +57,7 @@ namespace Blazor.Diagrams.Components.Renderers
 
             foreach (var path in Paths)
             {
-                var pathLength = path.GetTotalLength();
+                var pathLength = path.Length;
                 if (length < pathLength)
                 {
                     var pt = path.GetPointAtLength(length);

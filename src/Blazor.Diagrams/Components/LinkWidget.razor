@@ -11,7 +11,7 @@
     var result = pathGenerator(Diagram, Link, route, source, target);
     var color = Link.Selected ? (Link.SelectedColor ?? Diagram.Options.Links.DefaultSelectedColor)
         : (Link.Color ?? Diagram.Options.Links.DefaultColor);
-    var paths = Link.Labels.Count > 0 ? result.Paths.Select(p => new SVGPathProperties(p)).ToArray() : Array.Empty<SVGPathProperties>();
+    var paths = Link.Labels.Count > 0 ? result.Paths.Select(p => new SvgPath(p)).ToArray() : Array.Empty<SvgPath>();
     var dashed = Link.StrokeStyle == "dashed" ? "5" : "none";
 }
 

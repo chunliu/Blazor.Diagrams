@@ -20,9 +20,9 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
-    <PackageReference Include="SvgPathProperties" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" />
+    <PackageReference Include="SvgPathProperties" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
